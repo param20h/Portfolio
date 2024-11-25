@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Param20h</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="media/profile.png" type="image/png">
+</head>
+<body>
+    <header>
+        <h1>Welcome</h1>
+    <div class="profile-photo">
+        <img src="media/circle-photo.png" alt="Profile Photo" class="profile-img">
+        <img src="media/hover-image.png" alt="Hover Image" class="hover-img">
+    </div>
+        <nav style="position: absolute; top: 10px; right: 10px; text-align: justify;">
+            <div class="menu-icon" style="cursor: pointer;">
+            <img src="media/Dots -hree.gif" alt="Menu" width="30" height="30">
+            </div>
+            <ul class="menu" style="display: none; list-style-type: none; ">
+            <li style="list-style-type: circle;"><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://github.com/param20h" target="_blank">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="20" height="20"> GitHub
+            </a></li>
+            </ul>
+        </nav>
+        <script>
+            document.querySelector('.menu-icon').addEventListener('click', function() {
+            var menu = document.querySelector('.menu');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+            });
+        </script>
+    </header>
+    
+    <section id="about">
+        <h2>About Me</h2>
+        <p>Hello! I'm Paramjit Singh, a developer with a passion for Web3 game development, AI, and building innovative solutions. I've worked with NGOs and have experience in using technology to solve real-world problems. Currently, I'm working on an AI-based financial identification system and planning a Unity-based Web3 game.</p>
+    </section>
+    
+    <section id="projects">
+        <h2>Projects <img src="https://img.icons8.com/ios-filled/50/000000/star.png" alt="Star" width="20" height="20"></h2>
+        <ul>
+            <li>
+                <h3>Unity Web3 Game</h3>
+                <p>A Web3 game built using Unity, integrating blockchain technology to offer decentralized gaming experiences.</p>
+            </li>
+            <li>
+                <h3>AI-Based Financial Identification System</h3>
+                <p>An AI system designed to identify financial and insurance needs for the Indian Department of Posts, based on demographic and economic data.</p>
+            </li>
+            <li>
+                <h3>NGO Project Management System</h3>
+                <p>A project management tool for NGOs, improving coordination and efficiency in charitable activities.</p>
+            </li>
+        </ul>
+    </section>
+    
+    <section id="contact">
+        <h2>Contact Me <img src="https://img.icons8.com/ios-filled/50/000000/phone.png" alt="Contact" width="20" height="20"></h2>
+        <p>You can reach me at: <a href="mailto:parambrar862@gmail.com">parambrar862@gmail.com</a></p>
+    </section>
+    
+    <footer>
+        <p>&copy; 2024 Param20h. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/param.060/" target="_blank">
+                <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt="Instagram" width="20" height="20">
+            </a>
+            <a href="https://github.com/param20h" target="_blank">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="20" height="20">
+            </a>
+            <a href="https://www.linkedin.com/in/param20h" target="_blank">
+                <img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" alt="LinkedIn" width="20" height="20">
+            </a>
+        </div>
+    </footer></a></div>
+</body>
+</html>
