@@ -1,13 +1,105 @@
-// Enhanced Portfolio JavaScript
+// SPECTACULAR Portfolio JavaScript - Beyond Limits!
 
-// Custom Cursor
+// Loading Screen Animation
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const loadingScreen = document.querySelector('.loading-screen');
+        loadingScreen.classList.add('hidden');
+        
+        // Start main animations after loading
+        setTimeout(() => {
+            initializeSpectacularEffects();
+        }, 500);
+    }, 3000);
+});
+
+// Initialize all spectacular effects
+function initializeSpectacularEffects() {
+    createLoadingParticles();
+    createFloatingShapes();
+    createButtonParticles();
+    initializeProfileInteraction();
+    createAdvancedParticles();
+    initializeMouseTracker();
+}
+
+// Advanced Loading Particles
+function createLoadingParticles() {
+    const container = document.querySelector('.loading-particles');
+    if (!container) return;
+    
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 4 + 2}px;
+            height: ${Math.random() * 4 + 2}px;
+            background: ${['#00d4ff', '#ff6b6b', '#4ecdc4'][Math.floor(Math.random() * 3)]};
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: loadingFloat ${Math.random() * 3 + 2}s ease-in-out infinite alternate;
+            opacity: ${Math.random() * 0.8 + 0.2};
+        `;
+        container.appendChild(particle);
+    }
+}
+
+// Floating Geometric Shapes
+function createFloatingShapes() {
+    const container = document.querySelector('.floating-shapes');
+    const shapes = ['◆', '▲', '●', '■', '★', '♦'];
+    
+    for (let i = 0; i < 15; i++) {
+        const shape = document.createElement('div');
+        shape.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+        shape.style.cssText = `
+            position: absolute;
+            font-size: ${Math.random() * 20 + 10}px;
+            color: ${['#00d4ff', '#ff6b6b', '#4ecdc4', '#45b7d1'][Math.floor(Math.random() * 4)]};
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            opacity: ${Math.random() * 0.3 + 0.1};
+            animation: shapeFloat ${Math.random() * 10 + 5}s linear infinite;
+            pointer-events: none;
+        `;
+        container.appendChild(shape);
+    }
+}
+
+// Enhanced Cursor with Trail
 const cursor = document.querySelector('.cursor');
-let mouseX = 0;
-let mouseY = 0;
+const cursorTrail = [];
+let mouseX = 0, mouseY = 0;
+
+for (let i = 0; i < 10; i++) {
+    const trail = document.createElement('div');
+    trail.style.cssText = `
+        position: fixed;
+        width: ${15 - i}px;
+        height: ${15 - i}px;
+        background: rgba(0, 212, 255, ${0.8 - i * 0.08});
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transition: all 0.1s ease;
+    `;
+    document.body.appendChild(trail);
+    cursorTrail.push(trail);
+}
 
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    
+    // Update cursor trail
+    cursorTrail.forEach((trail, index) => {
+        setTimeout(() => {
+            trail.style.left = mouseX + 'px';
+            trail.style.top = mouseY + 'px';
+            trail.style.transform = 'translate(-50%, -50%)';
+        }, index * 20);
+    });
 });
 
 function animateCursor() {
@@ -17,51 +109,182 @@ function animateCursor() {
 }
 animateCursor();
 
-// Particles Background
-function createParticles() {
+// Enhanced cursor hover effects
+document.querySelectorAll('a, button, .project-card, .skill-category').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        cursorTrail.forEach(trail => {
+            trail.style.background = 'rgba(255, 107, 107, 0.6)';
+        });
+    });
+    
+    el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        cursorTrail.forEach((trail, index) => {
+            trail.style.background = `rgba(0, 212, 255, ${0.8 - index * 0.08})`;
+        });
+    });
+});
+
+// Spectacular Particle System
+function createAdvancedParticles() {
     const particlesContainer = document.querySelector('.particles');
-    const particleCount = 50;
+    const particleCount = 80;
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
+        const size = Math.random() * 3 + 1;
+        const color = ['#00d4ff', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'][Math.floor(Math.random() * 5)];
+        
         particle.style.cssText = `
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(0, 212, 255, 0.5);
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
             border-radius: 50%;
             pointer-events: none;
-            animation: float ${Math.random() * 3 + 2}s ease-in-out infinite alternate;
+            animation: particleFloat ${Math.random() * 8 + 4}s ease-in-out infinite alternate;
+            opacity: ${Math.random() * 0.8 + 0.2};
+            box-shadow: 0 0 ${size * 3}px ${color};
         `;
         
         particle.style.left = Math.random() * 100 + '%';
         particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 2 + 's';
+        particle.style.animationDelay = Math.random() * 4 + 's';
         
         particlesContainer.appendChild(particle);
     }
 }
 
-// Add floating animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes float {
-        0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-        100% { transform: translateY(-20px) rotate(180deg); opacity: 0.3; }
+// Mouse Tracker for Interactive Effects
+function initializeMouseTracker() {
+    document.addEventListener('mousemove', (e) => {
+        const mouseXPercent = (e.clientX / window.innerWidth) * 100;
+        const mouseYPercent = (e.clientY / window.innerHeight) * 100;
+        
+        // Parallax effect for floating shapes
+        document.querySelectorAll('.floating-shapes div').forEach((shape, index) => {
+            const speed = (index + 1) * 0.02;
+            const x = (mouseXPercent - 50) * speed;
+            const y = (mouseYPercent - 50) * speed;
+            shape.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        
+        // Interactive background gradient
+        document.body.style.background = `
+            radial-gradient(circle at ${mouseXPercent}% ${mouseYPercent}%, 
+            rgba(0, 212, 255, 0.1) 0%, 
+            rgba(255, 107, 107, 0.05) 30%, 
+            rgba(78, 205, 196, 0.05) 60%, 
+            transparent 100%),
+            linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%)
+        `;
+    });
+}
+
+// Enhanced Profile Photo Interaction
+function initializeProfileInteraction() {
+    const profilePhoto = document.querySelector('.profile-photo');
+    const floatingIcons = document.querySelectorAll('.floating-icon');
+    
+    profilePhoto.addEventListener('click', () => {
+        // Explosion effect
+        createExplosionEffect(profilePhoto);
+        
+        // Shake floating icons
+        floatingIcons.forEach((icon, index) => {
+            setTimeout(() => {
+                icon.style.animation = 'iconExplode 0.6s ease-out';
+                setTimeout(() => {
+                    icon.style.animation = `iconFloat 6s ease-in-out infinite`;
+                    icon.style.animationDelay = index * 1.5 + 's';
+                }, 600);
+            }, index * 100);
+        });
+        
+        // Profile photo special effect
+        profilePhoto.style.animation = 'profileExplode 0.8s ease-out';
+        setTimeout(() => {
+            profilePhoto.style.animation = 'profileAnimation 8s ease-in-out infinite, profileFloat 3s ease-in-out infinite alternate';
+        }, 800);
+    });
+}
+
+// Explosion Effect
+function createExplosionEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 20; i++) {
+        const spark = document.createElement('div');
+        const angle = (Math.PI * 2 * i) / 20;
+        const velocity = Math.random() * 100 + 50;
+        
+        spark.style.cssText = `
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: ${['#00d4ff', '#ff6b6b', '#4ecdc4'][Math.floor(Math.random() * 3)]};
+            border-radius: 50%;
+            left: ${centerX}px;
+            top: ${centerY}px;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 10px currentColor;
+        `;
+        
+        document.body.appendChild(spark);
+        
+        // Animate spark
+        const deltaX = Math.cos(angle) * velocity;
+        const deltaY = Math.sin(angle) * velocity;
+        
+        spark.animate([
+            { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+            { transform: `translate(${deltaX - 50}%, ${deltaY - 50}%) scale(0)`, opacity: 0 }
+        ], {
+            duration: 1000,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        }).onfinish = () => spark.remove();
     }
-`;
-document.head.appendChild(style);
+}
 
-createParticles();
+// Button Particle Effects
+function createButtonParticles() {
+    document.querySelectorAll('.btn').forEach(btn => {
+        const particleContainer = btn.querySelector('.btn-particles');
+        
+        btn.addEventListener('mouseenter', () => {
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 3px;
+                    height: 3px;
+                    background: white;
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation: btnParticleFloat 2s ease-out forwards;
+                    pointer-events: none;
+                `;
+                particleContainer.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2000);
+            }
+        });
+    });
+}
 
-// Typing Animation
+// Enhanced Typing Animation
 const typingText = document.querySelector('.typing-text');
 const phrases = [
-    'Full Stack Developer',
-    'Web3 Enthusiast',
-    'AI Developer',
-    'Game Developer',
-    'Problem Solver'
+    'Python Developer',
+    'Game Creator', 
+    'AI Enthusiast',
+    'Problem Solver',
+    'Innovation Seeker'
 ];
 
 let phraseIndex = 0;
@@ -79,6 +302,14 @@ function typeWriter() {
         charIndex++;
     }
     
+    // Add glitch effect occasionally
+    if (Math.random() < 0.1) {
+        typingText.style.textShadow = '2px 0 #ff6b6b, -2px 0 #00d4ff';
+        setTimeout(() => {
+            typingText.style.textShadow = '0 0 10px rgba(0, 212, 255, 0.5)';
+        }, 100);
+    }
+    
     let typeSpeed = isDeleting ? 50 : 100;
     
     if (!isDeleting && charIndex === currentPhrase.length) {
@@ -93,10 +324,8 @@ function typeWriter() {
     setTimeout(typeWriter, typeSpeed);
 }
 
-// Start typing animation after page load
-window.addEventListener('load', () => {
-    setTimeout(typeWriter, 1000);
-});
+// Start typing animation
+setTimeout(typeWriter, 2000);
 
 // Mobile Navigation
 const hamburger = document.querySelector('.hamburger');
@@ -105,6 +334,19 @@ const navMenu = document.querySelector('.nav-menu');
 hamburger?.addEventListener('click', () => {
     navMenu.classList.toggle('active');
     hamburger.classList.toggle('active');
+    
+    // Animate hamburger
+    const spans = hamburger.querySelectorAll('span');
+    if (hamburger.classList.contains('active')) {
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+    } else {
+        spans.forEach(span => {
+            span.style.transform = '';
+            span.style.opacity = '';
+        });
+    }
 });
 
 // Close mobile menu when clicking on a link
@@ -115,31 +357,60 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// Smooth Scrolling for Navigation Links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+// Smooth Scrolling with Easing
+document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            const targetPosition = target.offsetTop - 80;
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            const duration = 1000;
+            let start = null;
+            
+            function animation(currentTime) {
+                if (start === null) start = currentTime;
+                const timeElapsed = currentTime - start;
+                const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+                window.scrollTo(0, run);
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+            
+            function easeInOutQuad(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+            
+            requestAnimationFrame(animation);
         }
     });
 });
 
-// Navbar Background on Scroll
+// Enhanced Navbar on Scroll
+let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(0, 0, 0, 0.9)';
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > 100) {
+        navbar.classList.add('scrolled');
     } else {
-        navbar.style.background = 'rgba(0, 0, 0, 0.1)';
+        navbar.classList.remove('scrolled');
     }
+    
+    // Hide/show navbar on scroll
+    if (scrollTop > lastScrollTop && scrollTop > 200) {
+        navbar.style.transform = 'translateY(-100%)';
+    } else {
+        navbar.style.transform = 'translateY(0)';
+    }
+    lastScrollTop = scrollTop;
 });
 
-// Skill Bar Animation
+// Skill Bar Animation with Counter
 const observerOptions = {
     threshold: 0.5,
     rootMargin: '0px 0px -100px 0px'
@@ -149,9 +420,37 @@ const skillObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const skillBars = entry.target.querySelectorAll('.skill-progress');
-            skillBars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
-                bar.style.width = width + '%';
+            skillBars.forEach((bar, index) => {
+                setTimeout(() => {
+                    const width = bar.getAttribute('data-width');
+                    bar.style.width = width + '%';
+                    
+                    // Add percentage counter
+                    const counter = document.createElement('span');
+                    counter.style.cssText = `
+                        position: absolute;
+                        right: 10px;
+                        top: -25px;
+                        color: #00d4ff;
+                        font-weight: 600;
+                        font-size: 0.9rem;
+                    `;
+                    bar.parentElement.style.position = 'relative';
+                    bar.parentElement.appendChild(counter);
+                    
+                    // Animate counter
+                    let count = 0;
+                    const target = parseInt(width);
+                    const increment = target / 60;
+                    const timer = setInterval(() => {
+                        count += increment;
+                        if (count >= target) {
+                            count = target;
+                            clearInterval(timer);
+                        }
+                        counter.textContent = Math.floor(count) + '%';
+                    }, 16);
+                }, index * 200);
             });
         }
     });
@@ -162,220 +461,164 @@ if (skillsSection) {
     skillObserver.observe(skillsSection);
 }
 
-// Project Card Hover Effects
+// Project Card 3D Tilt Effect
 document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        
+        card.style.transform = `
+            translateY(-15px) 
+            rotateX(${rotateX}deg) 
+            rotateY(${rotateY}deg) 
+            scale(1.02)
+        `;
     });
     
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) rotateX(0) rotateY(0) scale(1)';
     });
 });
 
-// Contact Form Handling
+// Contact Form Enhancement
 const contactForm = document.querySelector('.contact-form form');
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get form data
-        const name = this.querySelector('input[type="text"]').value.trim();
-        const email = this.querySelector('input[type="email"]').value.trim();
+        const name = this.querySelector('input[type=\"text\"]').value.trim();
+        const email = this.querySelector('input[type=\"email\"]').value.trim();
         const message = this.querySelector('textarea').value.trim();
         
-        // Validation
         if (!name || !email || !message) {
-            showNotification('Please fill in all fields', 'error');
+            showSpectacularNotification('Please fill in all fields', 'error');
             return;
         }
         
         if (!isValidEmail(email)) {
-            showNotification('Please enter a valid email address', 'error');
+            showSpectacularNotification('Please enter a valid email address', 'error');
             return;
         }
         
-        // Submit form
-        submitForm(name, email, message, this);
+        submitFormWithEffect(name, email, message, this);
     });
 }
 
-// Email validation
 function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
     return emailRegex.test(email);
 }
 
-// Form submission function
-function submitForm(name, email, message, form) {
+function submitFormWithEffect(name, email, message, form) {
     const submitBtn = form.querySelector('.btn');
     const originalText = submitBtn.textContent;
     
-    // Show loading state
-    submitBtn.textContent = 'Sending...';
+    // Spectacular loading effect
+    submitBtn.innerHTML = '<span class=\"loading-dots\">Sending<span>.</span><span>.</span><span>.</span></span>';
     submitBtn.disabled = true;
-    submitBtn.style.opacity = '0.7';
     
-    // Create mailto link as fallback
+    // Create mailto link
     const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    const body = encodeURIComponent(`Name: ${name}\\nEmail: ${email}\\n\\nMessage:\\n${message}`);
     const mailtoLink = `mailto:parambrar862@gmail.com?subject=${subject}&body=${body}`;
     
-    // Try to send via EmailJS (if configured) or use mailto
-    if (typeof emailjs !== 'undefined' && window.emailjsConfig) {
-        // EmailJS integration (if configured)
-        emailjs.send(
-            window.emailjsConfig.serviceId,
-            window.emailjsConfig.templateId,
-            {
-                from_name: name,
-                from_email: email,
-                message: message,
-                to_email: 'parambrar862@gmail.com'
-            },
-            window.emailjsConfig.publicKey
-        ).then(() => {
-            showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-            form.reset();
-        }).catch(() => {
-            // Fallback to mailto
-            window.location.href = mailtoLink;
-            showNotification('Opening your email client...', 'info');
-        }).finally(() => {
-            resetButton(submitBtn, originalText);
-        });
-    } else {
-        // Fallback to mailto
-        setTimeout(() => {
-            window.location.href = mailtoLink;
-            showNotification('Opening your email client...', 'info');
-            form.reset();
-            resetButton(submitBtn, originalText);
-        }, 1000);
-    }
+    setTimeout(() => {
+        window.location.href = mailtoLink;
+        showSpectacularNotification('Opening your email client...', 'success');
+        form.reset();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }, 2000);
 }
 
-// Reset button state
-function resetButton(button, originalText) {
-    button.textContent = originalText;
-    button.disabled = false;
-    button.style.opacity = '1';
-}
-
-// Notification system
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotification = document.querySelector('.notification');
+// Spectacular Notification System
+function showSpectacularNotification(message, type = 'info') {
+    const existingNotification = document.querySelector('.spectacular-notification');
     if (existingNotification) {
         existingNotification.remove();
     }
     
-    // Create notification
     const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
+    notification.className = `spectacular-notification notification-${type}`;
+    
+    const colors = {
+        success: 'linear-gradient(45deg, #4ecdc4, #44a08d)',
+        error: 'linear-gradient(45deg, #ff6b6b, #ee5a52)',
+        info: 'linear-gradient(45deg, #00d4ff, #0099cc)'
+    };
+    
     notification.innerHTML = `
-        <div class="notification-content">
-            <span class="notification-message">${message}</span>
-            <button class="notification-close">&times;</button>
+        <div class=\"notification-content\">
+            <div class=\"notification-icon\">${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}</div>
+            <span class=\"notification-message\">${message}</span>
+            <button class=\"notification-close\">&times;</button>
         </div>
+        <div class=\"notification-progress\"></div>
     `;
     
-    // Add styles
     notification.style.cssText = `
         position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? 'rgba(0, 212, 255, 0.9)' : type === 'error' ? 'rgba(255, 107, 107, 0.9)' : 'rgba(255, 255, 255, 0.9)'};
+        top: 30px;
+        right: 30px;
+        background: ${colors[type]};
         color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 10px;
-        backdrop-filter: blur(10px);
+        padding: 1.5rem 2rem;
+        border-radius: 15px;
+        backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         z-index: 10000;
-        animation: slideInRight 0.3s ease;
-        max-width: 300px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: notificationSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        max-width: 400px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
     `;
     
-    // Add to page
     document.body.appendChild(notification);
     
-    // Close button functionality
+    // Progress bar animation
+    const progress = notification.querySelector('.notification-progress');
+    progress.style.cssText = `
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.3);
+        animation: notificationProgress 5s linear;
+    `;
+    
+    // Close functionality
     const closeBtn = notification.querySelector('.notification-close');
     closeBtn.addEventListener('click', () => {
-        notification.style.animation = 'slideOutRight 0.3s ease';
+        notification.style.animation = 'notificationSlideOut 0.3s ease';
         setTimeout(() => notification.remove(), 300);
     });
     
-    // Auto remove after 5 seconds
+    // Auto remove
     setTimeout(() => {
         if (notification.parentNode) {
-            notification.style.animation = 'slideOutRight 0.3s ease';
+            notification.style.animation = 'notificationSlideOut 0.3s ease';
             setTimeout(() => notification.remove(), 300);
         }
     }, 5000);
 }
 
-// Add notification animations
-const notificationStyles = document.createElement('style');
-notificationStyles.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-    
-    .notification-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-    }
-    
-    .notification-close {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 0;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .notification-close:hover {
-        opacity: 0.7;
-    }
-`;
-document.head.appendChild(notificationStyles);
-
 // Scroll Reveal Animation
-const revealElements = document.querySelectorAll('.project-card, .skill-category, .stat');
+const revealElements = document.querySelectorAll('.project-card, .skill-category, .stat, .about-text p');
 
 const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0) scale(1)';
+            }, index * 100);
         }
     });
 }, {
@@ -385,56 +628,101 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 revealElements.forEach(el => {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s ease';
+    el.style.transform = 'translateY(50px) scale(0.9)';
+    el.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
     revealObserver.observe(el);
 });
 
-// Add loading animation
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
-// Easter egg - Konami code
-let konamiCode = [];
-const konamiSequence = [
-    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-    'KeyB', 'KeyA'
-];
-
-document.addEventListener('keydown', (e) => {
-    konamiCode.push(e.code);
-    
-    if (konamiCode.length > konamiSequence.length) {
-        konamiCode.shift();
+// Add CSS animations
+const spectacularStyles = document.createElement('style');
+spectacularStyles.textContent = `
+    @keyframes loadingFloat {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
     }
     
-    if (konamiCode.join(',') === konamiSequence.join(',')) {
-        // Easter egg activated
-        document.body.style.animation = 'rainbow 2s ease infinite';
-        setTimeout(() => {
-            document.body.style.animation = '';
-        }, 5000);
+    @keyframes shapeFloat {
+        0% { transform: translateY(100vh) rotate(0deg); }
+        100% { transform: translateY(-100px) rotate(360deg); }
     }
-});
-
-// Add rainbow animation for easter egg
-const rainbowStyle = document.createElement('style');
-rainbowStyle.textContent = `
-    @keyframes rainbow {
-        0% { filter: hue-rotate(0deg); }
-        100% { filter: hue-rotate(360deg); }
+    
+    @keyframes particleFloat {
+        0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.2; }
+        25% { transform: translateY(-30px) translateX(10px); opacity: 1; }
+        50% { transform: translateY(-10px) translateX(-10px); opacity: 0.8; }
+        75% { transform: translateY(-40px) translateX(5px); opacity: 1; }
+    }
+    
+    @keyframes iconExplode {
+        0% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.5) rotate(180deg); }
+        100% { transform: scale(1) rotate(360deg); }
+    }
+    
+    @keyframes profileExplode {
+        0% { transform: scale(1) rotate(0deg); }
+        25% { transform: scale(1.2) rotate(5deg); }
+        50% { transform: scale(0.9) rotate(-5deg); }
+        75% { transform: scale(1.1) rotate(3deg); }
+        100% { transform: scale(1) rotate(0deg); }
+    }
+    
+    @keyframes btnParticleFloat {
+        0% { opacity: 1; transform: translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateY(-50px) scale(0); }
+    }
+    
+    @keyframes notificationSlideIn {
+        0% { transform: translateX(100%) scale(0.8); opacity: 0; }
+        100% { transform: translateX(0) scale(1); opacity: 1; }
+    }
+    
+    @keyframes notificationSlideOut {
+        0% { transform: translateX(0) scale(1); opacity: 1; }
+        100% { transform: translateX(100%) scale(0.8); opacity: 0; }
+    }
+    
+    @keyframes notificationProgress {
+        0% { width: 100%; }
+        100% { width: 0%; }
+    }
+    
+    .loading-dots span {
+        animation: loadingDots 1.4s ease-in-out infinite both;
+    }
+    
+    .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+    
+    @keyframes loadingDots {
+        0%, 80%, 100% { opacity: 0; }
+        40% { opacity: 1; }
+    }
+    
+    .notification-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .notification-icon {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    
+    .notification-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        margin-left: auto;
     }
 `;
-document.head.appendChild(rainbowStyle);
+document.head.appendChild(spectacularStyles);
 
-// Performance optimization - Throttle scroll events
+// Performance optimization
 function throttle(func, limit) {
     let inThrottle;
     return function() {
@@ -454,20 +742,96 @@ window.addEventListener('scroll', throttle(() => {
     const hero = document.querySelector('.hero');
     const scrolled = window.pageYOffset;
     if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
     }
 }, 16));
 
-// Optional: EmailJS Configuration
-// Uncomment and configure if you want to use EmailJS for form submissions
-/*
-window.emailjsConfig = {
-    serviceId: 'your_service_id',
-    templateId: 'your_template_id',
-    publicKey: 'your_public_key'
-};
-*/
+// Easter egg - Konami code with spectacular effect
+let konamiCode = [];
+const konamiSequence = [
+    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+    'KeyB', 'KeyA'
+];
 
-console.log('🚀 Portfolio loaded successfully!');
-console.log('💡 Try the Konami code for a surprise!');
-console.log('📧 Contact form ready - uses mailto as fallback');
+document.addEventListener('keydown', (e) => {
+    konamiCode.push(e.code);
+    
+    if (konamiCode.length > konamiSequence.length) {
+        konamiCode.shift();
+    }
+    
+    if (konamiCode.join(',') === konamiSequence.join(',')) {
+        // SPECTACULAR EASTER EGG!
+        document.body.style.animation = 'rainbowExplosion 3s ease infinite';
+        showSpectacularNotification('🎉 KONAMI CODE ACTIVATED! You found the secret!', 'success');
+        
+        // Create fireworks
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                createFirework();
+            }, i * 500);
+        }
+        
+        setTimeout(() => {
+            document.body.style.animation = '';
+        }, 10000);
+    }
+});
+
+function createFirework() {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'];
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight * 0.5;
+    
+    for (let i = 0; i < 30; i++) {
+        const spark = document.createElement('div');
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const angle = (Math.PI * 2 * i) / 30;
+        const velocity = Math.random() * 150 + 50;
+        
+        spark.style.cssText = `
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: ${color};
+            border-radius: 50%;
+            left: ${x}px;
+            top: ${y}px;
+            pointer-events: none;
+            z-index: 10000;
+            box-shadow: 0 0 20px ${color};
+        `;
+        
+        document.body.appendChild(spark);
+        
+        const deltaX = Math.cos(angle) * velocity;
+        const deltaY = Math.sin(angle) * velocity;
+        
+        spark.animate([
+            { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+            { transform: `translate(${deltaX}px, ${deltaY + 200}px) scale(0)`, opacity: 0 }
+        ], {
+            duration: 2000,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        }).onfinish = () => spark.remove();
+    }
+}
+
+// Add rainbow animation
+const rainbowStyle = document.createElement('style');
+rainbowStyle.textContent = `
+    @keyframes rainbowExplosion {
+        0% { filter: hue-rotate(0deg) saturate(1) brightness(1); }
+        25% { filter: hue-rotate(90deg) saturate(1.5) brightness(1.2); }
+        50% { filter: hue-rotate(180deg) saturate(2) brightness(1.5); }
+        75% { filter: hue-rotate(270deg) saturate(1.5) brightness(1.2); }
+        100% { filter: hue-rotate(360deg) saturate(1) brightness(1); }
+    }
+`;
+document.head.appendChild(rainbowStyle);
+
+console.log('🚀 SPECTACULAR Portfolio loaded successfully!');
+console.log('✨ Try the Konami code for an AMAZING surprise!');
+console.log('🎮 Click the profile photo for explosion effects!');
+console.log('🌟 This portfolio is beyond limits!');
