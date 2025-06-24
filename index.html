@@ -227,15 +227,15 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form>
+                    <form id="contact-form" novalidate>
                         <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
+                            <input type="text" name="name" placeholder="Your Name" required minlength="2" maxlength="50">
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
+                            <input type="email" name="email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                            <textarea name="message" placeholder="Your Message" rows="5" required minlength="10" maxlength="1000"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
@@ -248,7 +248,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-text">
-                    <p>&copy; 2024 Paramjit Singh. All rights reserved.</p>
+                    <p>&copy; 2025 Param20h. All rights reserved.</p>
                 </div>
                 <div class="social-links">
                     <a href="https://www.instagram.com/param.060/" target="_blank" class="social-link">

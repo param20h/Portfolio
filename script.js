@@ -180,31 +180,193 @@ if (contactForm) {
         e.preventDefault();
         
         // Get form data
-        const formData = new FormData(this);
-        const name = this.querySelector('input[type="text"]').value;
-        const email = this.querySelector('input[type="email"]').value;
-        const message = this.querySelector('textarea').value;
+        const name = this.querySelector('input[type="text"]').value.trim();
+        const email = this.querySelector('input[type="email"]').value.trim();
+        const message = this.querySelector('textarea').value.trim();
         
-        // Simple validation
+        // Validation
         if (!name || !email || !message) {
-            alert('Please fill in all fields');
+            showNotification('Please fill in all fields', 'error');
             return;
         }
         
-        // Simulate form submission
-        const submitBtn = this.querySelector('.btn');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
-        submitBtn.style.opacity = '0.7';
+        if (!isValidEmail(email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
         
-        setTimeout(() => {
-            alert('Thank you for your message! I\'ll get back to you soon.');
-            this.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.style.opacity = '1';
-        }, 2000);
+        // Submit form
+        submitForm(name, email, message, this);
     });
 }
+
+// Email validation
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Form submission function
+function submitForm(name, email, message, form) {
+    const submitBtn = form.querySelector('.btn');
+    const originalText = submitBtn.textContent;
+    
+    // Show loading state
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+    
+    // Create mailto link as fallback
+    const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    const mailtoLink = `mailto:parambrar862@gmail.com?subject=${subject}&body=${body}`;
+    
+    // Try to send via EmailJS (if configured) or use mailto
+    if (typeof emailjs !== 'undefined' && window.emailjsConfig) {
+        // EmailJS integration (if configured)
+        emailjs.send(
+            window.emailjsConfig.serviceId,
+            window.emailjsConfig.templateId,
+            {
+                from_name: name,
+                from_email: email,
+                message: message,
+                to_email: 'parambrar862@gmail.com'
+            },
+            window.emailjsConfig.publicKey
+        ).then(() => {
+            showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+            form.reset();
+        }).catch(() => {
+            // Fallback to mailto
+            window.location.href = mailtoLink;
+            showNotification('Opening your email client...', 'info');
+        }).finally(() => {
+            resetButton(submitBtn, originalText);
+        });
+    } else {
+        // Fallback to mailto
+        setTimeout(() => {
+            window.location.href = mailtoLink;
+            showNotification('Opening your email client...', 'info');
+            form.reset();
+            resetButton(submitBtn, originalText);
+        }, 1000);
+    }
+}
+
+// Reset button state
+function resetButton(button, originalText) {
+    button.textContent = originalText;
+    button.disabled = false;
+    button.style.opacity = '1';
+}
+
+// Notification system
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-message">${message}</span>
+            <button class="notification-close">&times;</button>
+        </div>
+    `;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? 'rgba(0, 212, 255, 0.9)' : type === 'error' ? 'rgba(255, 107, 107, 0.9)' : 'rgba(255, 255, 255, 0.9)'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+        max-width: 300px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Close button functionality
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    });
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
+
+// Add notification animations
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    .notification-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .notification-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .notification-close:hover {
+        opacity: 0.7;
+    }
+`;
+document.head.appendChild(notificationStyles);
 
 // Scroll Reveal Animation
 const revealElements = document.querySelectorAll('.project-card, .skill-category, .stat');
@@ -296,5 +458,16 @@ window.addEventListener('scroll', throttle(() => {
     }
 }, 16));
 
+// Optional: EmailJS Configuration
+// Uncomment and configure if you want to use EmailJS for form submissions
+/*
+window.emailjsConfig = {
+    serviceId: 'your_service_id',
+    templateId: 'your_template_id',
+    publicKey: 'your_public_key'
+};
+*/
+
 console.log('🚀 Portfolio loaded successfully!');
 console.log('💡 Try the Konami code for a surprise!');
+console.log('📧 Contact form ready - uses mailto as fallback');
