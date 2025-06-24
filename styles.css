@@ -273,7 +273,7 @@ body {
     justify-content: center;
     text-align: center;
     position: relative;
-    padding: 0 2rem;
+    padding: 100px 2rem 0;
     overflow: hidden;
 }
 
@@ -679,41 +679,7 @@ body {
     pointer-events: none;
 }
 
-.scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    color: #ffffff;
-    opacity: 0;
-    animation: fadeInUp 1s ease 4s forwards;
-}
 
-.scroll-arrow {
-    width: 2px;
-    height: 30px;
-    background: linear-gradient(to bottom, transparent, #00d4ff);
-    margin: 0 auto 10px;
-    animation: scrollBounce 2s ease-in-out infinite;
-}
-
-.scroll-arrow::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: -3px;
-    width: 8px;
-    height: 8px;
-    border-right: 2px solid #00d4ff;
-    border-bottom: 2px solid #00d4ff;
-    transform: rotate(45deg);
-}
-
-@keyframes scrollBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(10px); }
-}
 
 /* Section Styles */
 section {
