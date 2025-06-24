@@ -1,83 +1,270 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Param20h</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramjit Singh - Full Stack Developer</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="media/profile.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome</h1>
-    <div class="profile-photo">
-        <img src="media/circle-photo.png" alt="Profile Photo" class="profile-img">
-        <img src="media/hover-image.png" alt="Hover Image" class="hover-img">
-    </div>
-        <nav style="position: absolute; top: 10px; right: 10px; text-align: justify;">
-            <div class="menu-icon" style="cursor: pointer;">
-            <img src="media/Dots -hree.gif" alt="Menu" width="30" height="30">
+    <div class="cursor"></div>
+    <div class="particles"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">Param20h</span>
             </div>
-            <ul class="menu" style="display: none; list-style-type: none; ">
-            <li style="list-style-type: circle;"><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="https://github.com/param20h" target="_blank">
-                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="20" height="20"> GitHub
-            </a></li>
-            </ul>
-        </nav>
-        <script>
-            document.querySelector('.menu-icon').addEventListener('click', function() {
-            var menu = document.querySelector('.menu');
-            if (menu.style.display === 'none' || menu.style.display === '') {
-                menu.style.display = 'block';
-            } else {
-                menu.style.display = 'none';
-            }
-            });
-        </script>
-    </header>
-    
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hello! I'm Paramjit Singh, a developer with a passion for Web3 game development, AI, and building innovative solutions. I've worked with NGOs and have experience in using technology to solve real-world problems. Currently, I'm working on an AI-based financial identification system and planning a Unity-based Web3 game.</p>
-    </section>
-    
-    <section id="projects">
-        <h2>Projects <img src="https://img.icons8.com/ios-filled/50/000000/star.png" alt="Star" width="20" height="20"></h2>
-        <ul>
-            <li>
-                <h3>Unity Web3 Game</h3>
-                <p>A Web3 game built using Unity, integrating blockchain technology to offer decentralized gaming experiences.</p>
-            </li>
-            <li>
-                <h3>AI-Based Financial Identification System</h3>
-                <p>An AI system designed to identify financial and insurance needs for the Indian Department of Posts, based on demographic and economic data.</p>
-            </li>
-            <li>
-                <h3>NGO Project Management System</h3>
-                <p>A project management tool for NGOs, improving coordination and efficiency in charitable activities.</p>
-            </li>
-        </ul>
-    </section>
-    
-    <section id="contact">
-        <h2>Contact Me <img src="https://img.icons8.com/ios-filled/50/000000/phone.png" alt="Contact" width="20" height="20"></h2>
-        <p>You can reach me at: <a href="mailto:parambrar862@gmail.com">parambrar862@gmail.com</a></p>
-    </section>
-    
-    <footer>
-        <p>&copy; 2024 Param20h. All rights reserved.</p>
-        <div class="social-links">
-            <a href="https://www.instagram.com/param.060/" target="_blank">
-                <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt="Instagram" width="20" height="20">
-            </a>
-            <a href="https://github.com/param20h" target="_blank">
-                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="20" height="20">
-            </a>
-            <a href="https://www.linkedin.com/in/param20h" target="_blank">
-                <img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" alt="LinkedIn" width="20" height="20">
-            </a>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </footer></a></div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="profile-container">
+                <div class="profile-photo">
+                    <img src="media/circle-photo.png" alt="Profile Photo" class="profile-img">
+                    <img src="media/hover-image.png" alt="Hover Image" class="hover-img">
+                </div>
+            </div>
+            <h1 class="hero-title">
+                Hi, I'm <span class="highlight">Paramjit Singh</span>
+            </h1>
+            <div class="typing-container">
+                <span class="typing-text"></span>
+                <span class="cursor-blink">|</span>
+            </div>
+            <p class="hero-description">
+                Full Stack Developer passionate about Web3, AI, and creating innovative solutions
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-intro">
+                        Hello! I'm <strong>Paramjit Singh</strong>, a passionate full-stack developer with expertise in Web3 game development, AI, and innovative solution building.
+                    </p>
+                    <p>
+                        I have hands-on experience working with NGOs and leveraging technology to solve real-world problems. My journey in tech has led me to explore cutting-edge technologies and create impactful solutions.
+                    </p>
+                    <p>
+                        Currently, I'm developing an AI-based financial identification system and planning an exciting Unity-based Web3 game that combines blockchain technology with immersive gaming experiences.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <h3>3+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                        <div class="stat">
+                            <h3>10+</h3>
+                            <p>Projects Completed</p>
+                        </div>
+                        <div class="stat">
+                            <h3>5+</h3>
+                            <p>Technologies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Skills & Technologies</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Frontend</h3>
+                    <div class="skill-item">
+                        <span>HTML/CSS/JavaScript</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="90"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span>React/Next.js</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-server"></i> Backend</h3>
+                    <div class="skill-item">
+                        <span>Node.js/Express</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Python/Django</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-cube"></i> Web3 & AI</h3>
+                    <div class="skill-item">
+                        <span>Blockchain/Smart Contracts</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Machine Learning/AI</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-gamepad"></i> Game Dev</h3>
+                    <div class="skill-item">
+                        <span>Unity/C#</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Game Design</span>
+                        <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-gamepad project-icon"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Unity Web3 Game</h3>
+                        <p>A cutting-edge Web3 game built with Unity, integrating blockchain technology to deliver decentralized gaming experiences with NFT integration and cryptocurrency rewards.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Unity</span>
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">Blockchain</span>
+                            <span class="tech-tag">Web3</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="https://github.com/param20h" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-brain project-icon"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>AI Financial Identification System</h3>
+                        <p>An intelligent AI system designed for the Indian Department of Posts to identify financial and insurance needs based on comprehensive demographic and economic data analysis.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Machine Learning</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">Data Analysis</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="https://github.com/param20h" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-hands-helping project-icon"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>NGO Project Management System</h3>
+                        <p>A comprehensive project management platform designed specifically for NGOs to improve coordination, track progress, and enhance efficiency in charitable activities and community outreach.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Express</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="https://github.com/param20h" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Work Together</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <p>I'm always interested in new opportunities and exciting projects. Let's discuss how we can work together!</p>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:parambrar862@gmail.com">parambrar862@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Available for Remote Work</span>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2024 Paramjit Singh. All rights reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/param.060/" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com/param20h" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/param20h" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
 </body>
 </html>
