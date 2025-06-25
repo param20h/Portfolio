@@ -260,18 +260,16 @@ function createButtonParticles() {
                 const particle = document.createElement('div');
                 particle.style.cssText = `
                     position: absolute;
-                    width: 3px;
-                    height: 3px;
-                    background: white;
+                    width: 2px;
+                    height: 2px;
+                    background:rgb(255, 255, 255);
                     border-radius: 50%;
                     left: ${Math.random() * 100}%;
                     top: ${Math.random() * 100}%;
-                    animation: btnParticleFloat 2s ease-out forwards;
-                    pointer-events: none;
+                    animation: btnParticle 1s ease-out forwards;
                 `;
                 particleContainer.appendChild(particle);
-                
-                setTimeout(() => particle.remove(), 2000);
+                setTimeout(() => particle.remove(), 1000);
             }
         });
     });
@@ -425,41 +423,78 @@ const skillObserver = new IntersectionObserver((entries) => {
                     const width = bar.getAttribute('data-width');
                     bar.style.width = width + '%';
                     
-                    // Add percentage counter
-                    const counter = document.createElement('span');
-                    counter.style.cssText = `
-                        position: absolute;
-                        right: 10px;
-                        top: -25px;
-                        color: #00d4ff;
-                        font-weight: 600;
-                        font-size: 0.9rem;
-                    `;
-                    bar.parentElement.style.position = 'relative';
-                    bar.parentElement.appendChild(counter);
-                    
                     // Animate counter
-                    let count = 0;
-                    const target = parseInt(width);
-                    const increment = target / 60;
-                    const timer = setInterval(() => {
-                        count += increment;
-                        if (count >= target) {
-                            count = target;
-                            clearInterval(timer);
-                        }
-                        counter.textContent = Math.floor(count) + '%';
-                    }, 16);
+                    const counter = bar.querySelector('.skill-percentage');
+                    if (counter) {
+                        animateCounter(counter, 0, parseInt(width), 1500);
+                    }
                 }, index * 200);
             });
         }
     });
 }, observerOptions);
 
+// Counter animation function
+function animateCounter(element, start, end, duration) {
+    const startTime = performance.now();
+    
+    function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(start + (end - start) * progress);
+        
+        element.textContent = current + '%';
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        }
+    }
+    
+    requestAnimationFrame(updateCounter);
+}
+
+// Initialize skill bars without percentage text
+function initializeSkillBars() {
+    document.querySelectorAll('.skill-progress').forEach(bar => {
+        const width = bar.getAttribute('data-width');
+        
+        // Set CSS custom property for width
+        bar.style.setProperty('--progress-width', width + '%');
+        
+        // Remove any existing percentage text
+        const existingPercentage = bar.querySelector('.skill-percentage');
+        if (existingPercentage) {
+            existingPercentage.remove();
+        }
+    });
+}
+
+// Observe skills section
 const skillsSection = document.querySelector('.skills');
 if (skillsSection) {
+    initializeSkillBars();
     skillObserver.observe(skillsSection);
 }
+
+// Project Card Hover Effects
+document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-10px) rotateX(5deg)';
+        card.style.boxShadow = '0 20px 40px rgba(0, 212, 255, 0.3)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) rotateX(0)';
+        card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+    });
+});
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeSkillBars();
+    console.log('Portfolio loaded successfully!');
+});
+// (Removed duplicate IntersectionObserver and skillsSection code)
 
 // Project Card 3D Tilt Effect
 document.querySelectorAll('.project-card').forEach(card => {

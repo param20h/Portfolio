@@ -919,6 +919,36 @@ section {
     border-radius: 5px;
     overflow: hidden;
     position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.skill-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transition: left 0.6s ease;
+    border-radius: 5px;
+    z-index: 3;
+}
+
+.skill-bar:hover::after {
+    left: 100%;
+}
+
+.skill-bar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+    background: rgba(0, 212, 255, 0.2);
+}
+
+.skill-bar:hover .skill-progress {
+    width: var(--progress-width) !important;
+    transition: width 0.8s ease;
 }
 
 .skill-bar::before {
@@ -942,10 +972,33 @@ section {
     background: linear-gradient(45deg, #00d4ff, #ff6b6b, #4ecdc4);
     background-size: 200% 200%;
     border-radius: 5px;
-    width: 0;
-    transition: width 1s ease;
+    width: var(--progress-width);
+    transition: width 1.5s ease;
     animation: skillGradient 3s ease-in-out infinite;
     position: relative;
+    cursor: pointer;
+    --progress-width: 0%;
+}
+
+.skill-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+    border-radius: 5px;
+}
+
+.skill-progress:hover::after {
+    left: 100%;
+}
+
+.skill-progress:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
 }
 
 @keyframes skillGradient {
