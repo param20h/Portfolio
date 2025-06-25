@@ -282,7 +282,8 @@ const phrases = [
     'Game Creator', 
     'AI Enthusiast',
     'Problem Solver',
-    'Innovation Seeker'
+    'Innovation Seeker',
+    'Gym Rat'
 ];
 
 let phraseIndex = 0;
@@ -466,6 +467,67 @@ function initializeSkillBars() {
         if (existingPercentage) {
             existingPercentage.remove();
         }
+        
+        // Add pulse effect on high skills
+        if (parseInt(width) >= 80) {
+            bar.style.boxShadow = '0 0 20px rgba(0, 212, 255, 0.6)';
+            bar.style.animation += ', skillPulse 2s ease-in-out infinite';
+        }
+    });
+}
+
+// Add skill category icon animations
+function enhanceSkillIcons() {
+    document.querySelectorAll('.skill-category h3 i').forEach((icon, index) => {
+        icon.addEventListener('mouseenter', () => {
+            icon.style.transform = 'scale(1.3) rotate(360deg)';
+            icon.style.color = '#ff6b6b';
+        });
+        
+        icon.addEventListener('mouseleave', () => {
+            icon.style.transform = 'scale(1) rotate(0deg)';
+            icon.style.color = '#00d4ff';
+        });
+        
+        // Random floating animation
+        setTimeout(() => {
+            icon.style.animation = `iconFloat 3s ease-in-out infinite ${index * 0.5}s`;
+        }, index * 200);
+    });
+}
+
+// Add skill bar click effects
+function addSkillBarEffects() {
+    document.querySelectorAll('.skill-bar').forEach(bar => {
+        bar.addEventListener('click', () => {
+            // Create sparkle effect
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: #00d4ff;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1000;
+                `;
+                
+                const rect = bar.getBoundingClientRect();
+                sparkle.style.left = rect.left + Math.random() * rect.width + 'px';
+                sparkle.style.top = rect.top + Math.random() * rect.height + 'px';
+                
+                document.body.appendChild(sparkle);
+                
+                sparkle.animate([
+                    { transform: 'scale(0) translateY(0px)', opacity: 1 },
+                    { transform: 'scale(1) translateY(-30px)', opacity: 0 }
+                ], {
+                    duration: 800,
+                    easing: 'ease-out'
+                }).onfinish = () => sparkle.remove();
+            }
+        });
     });
 }
 
@@ -489,9 +551,102 @@ document.querySelectorAll('.project-card').forEach(card => {
     });
 });
 
+// EmailJS Configuration
+(function() {
+    emailjs.init('N9Y9c1frAzwZmLKVI');
+})();
+
+// Contact Form with EmailJS
+const contactFormEmailJS = document.getElementById('contact-form');
+if (contactFormEmailJS) {
+    contactFormEmailJS.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = this.querySelector('input[name="name"]').value.trim();
+        const email = this.querySelector('input[name="email"]').value.trim();
+        const message = this.querySelector('textarea[name="message"]').value.trim();
+        
+        if (!name || !email || !message) {
+            showNotification('Please fill in all fields', 'error');
+            return;
+        }
+        
+        if (!isValidEmail(email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
+        
+        sendEmail(name, email, message, this);
+    });
+}
+
+function isValidEmail(email) {
+    return email.includes('@') && email.includes('.') && email.length > 5;
+}
+
+function sendEmail(name, email, message, form) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    
+    // Show loading state
+    submitBtn.innerHTML = 'Sending...';
+    submitBtn.disabled = true;
+    
+    // EmailJS send
+    emailjs.send('service_wv98oq4', 'template_2096w1h', {
+        from_name: name,
+        from_email: email,
+        message: message,
+        to_name: 'Paramjit Singh'
+    })
+    .then(function(response) {
+        showNotification('Message sent successfully!', 'success');
+        form.reset();
+    })
+    .catch(function(error) {
+        showNotification('Failed to send message. Please try again.', 'error');
+        console.error('EmailJS error:', error);
+    })
+    .finally(function() {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    });
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+        background: ${type === 'success' ? 'linear-gradient(45deg, #4ecdc4, #44a08d)' : 'linear-gradient(45deg, #ff6b6b, #ee5a52)'};
+    `;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initializeSkillBars();
+    enhanceSkillIcons();
+    addSkillBarEffects();
+    console.log('Portfolio loaded successfully!');
+});r('DOMContentLoaded', () => {
+    initializeSkillBars();
+    enhanceSkillIcons();
+    addSkillBarEffects();
     console.log('Portfolio loaded successfully!');
 });
 // (Removed duplicate IntersectionObserver and skillsSection code)
@@ -522,56 +677,7 @@ document.querySelectorAll('.project-card').forEach(card => {
     });
 });
 
-// Contact Form Enhancement
-const contactForm = document.querySelector('.contact-form form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const name = this.querySelector('input[type=\"text\"]').value.trim();
-        const email = this.querySelector('input[type=\"email\"]').value.trim();
-        const message = this.querySelector('textarea').value.trim();
-        
-        if (!name || !email || !message) {
-            showSpectacularNotification('Please fill in all fields', 'error');
-            return;
-        }
-        
-        if (!isValidEmail(email)) {
-            showSpectacularNotification('Please enter a valid email address', 'error');
-            return;
-        }
-        
-        submitFormWithEffect(name, email, message, this);
-    });
-}
 
-function isValidEmail(email) {
-    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-    return emailRegex.test(email);
-}
-
-function submitFormWithEffect(name, email, message, form) {
-    const submitBtn = form.querySelector('.btn');
-    const originalText = submitBtn.textContent;
-    
-    // Spectacular loading effect
-    submitBtn.innerHTML = '<span class=\"loading-dots\">Sending<span>.</span><span>.</span><span>.</span></span>';
-    submitBtn.disabled = true;
-    
-    // Create mailto link
-    const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\\nEmail: ${email}\\n\\nMessage:\\n${message}`);
-    const mailtoLink = `mailto:parambrar862@gmail.com?subject=${subject}&body=${body}`;
-    
-    setTimeout(() => {
-        window.location.href = mailtoLink;
-        showSpectacularNotification('Opening your email client...', 'success');
-        form.reset();
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }, 2000);
-}
 
 // Spectacular Notification System
 function showSpectacularNotification(message, type = 'info') {
