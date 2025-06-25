@@ -1008,7 +1008,47 @@ rainbowStyle.textContent = `
 `;
 document.head.appendChild(rainbowStyle);
 
+// Dark/Light Mode Toggle - Feature #1
+function initializeThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+    
+    // Check for saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        icon.className = 'fas fa-sun';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            icon.className = 'fas fa-sun';
+            localStorage.setItem('theme', 'light');
+            showNotification('Light mode activated! ☀️', 'success');
+        } else {
+            icon.className = 'fas fa-moon';
+            localStorage.setItem('theme', 'dark');
+            showNotification('Dark mode activated! 🌙', 'success');
+        }
+        
+        // Add rotation animation
+        themeToggle.style.transform = 'scale(1.2) rotate(360deg)';
+        setTimeout(() => {
+            themeToggle.style.transform = '';
+        }, 300);
+    });
+}
+
+// Initialize theme toggle
+document.addEventListener('DOMContentLoaded', () => {
+    initializeThemeToggle();
+});
+
 console.log('🚀 SPECTACULAR Portfolio loaded successfully!');
+console.log('🌙 Feature #1: Dark/Light Mode Toggle - ACTIVATED!');
 console.log('✨ Try the Konami code for an AMAZING surprise!');
 console.log('🎮 Click the profile photo for explosion effects!');
 console.log('🌟 This portfolio is beyond limits!');
