@@ -1513,6 +1513,80 @@ section {
     100% { background-position: 0% 50%; }
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00d4ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.theme-toggle:hover {
+    background: rgba(0, 212, 255, 0.2);
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+/* Light Mode Styles */
+body.light-mode {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #f8f9fa 100%) !important;
+    color: #212529 !important;
+}
+
+.light-mode .navbar {
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .nav-link {
+    color: #212529;
+}
+
+.light-mode .nav-link:hover {
+    color: #0066cc;
+    background: rgba(0, 102, 204, 0.1);
+}
+
+.light-mode .hero {
+    color: #212529;
+}
+
+.light-mode .section-title {
+    color: #212529;
+}
+
+.light-mode .skill-category,
+.light-mode .project-card,
+.light-mode .stat,
+.light-mode .contact-form {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #212529;
+}
+
+.light-mode .about-text p,
+.light-mode .project-content p {
+    color: #495057;
+}
+
+.light-mode .theme-toggle {
+    color: #ffc107;
+    border-color: rgba(255, 193, 7, 0.3);
+}
+
+.light-mode .theme-toggle:hover {
+    background: rgba(255, 193, 7, 0.2);
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+}
+
 @keyframes coffeeWiggle {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(-5deg); }
