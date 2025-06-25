@@ -517,20 +517,34 @@ body {
     font-size: 4rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: titleReveal 2s ease 1s forwards;
+    color: #ffffff;
+    opacity: 1; /* Make immediately visible */
 }
 
 .title-word {
     display: inline-block;
     opacity: 0;
     animation: wordSlideIn 0.8s ease forwards;
+    color: #ffffff; /* Ensure base color is visible */
 }
 
-.title-word:nth-child(1) { animation-delay: 1.2s; }
-.title-word:nth-child(2) { animation-delay: 1.4s; }
-.title-word:nth-child(3) { animation-delay: 1.6s; }
-.title-word:nth-child(4) { animation-delay: 1.8s; }
+.title-word:nth-child(1) { animation-delay: 0.5s; }
+.title-word:nth-child(2) { animation-delay: 0.7s; }
+.title-word:nth-child(3) { animation-delay: 0.9s; }
+.title-word:nth-child(4) { animation-delay: 1.1s; }
+
+/* Ensure highlighted words are always visible */
+.title-word.highlight {
+    color: #00d4ff !important;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* Force visibility for name specifically */
+.hero-title .highlight {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
 
 @keyframes wordSlideIn {
     0% { opacity: 0; transform: translateY(50px) rotateX(90deg); }
@@ -549,6 +563,15 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: highlightShine 3s ease-in-out infinite;
+    color: #00d4ff; /* Fallback color for browsers that don't support background-clip */
+}
+
+/* Ensure visibility on all browsers */
+@supports not (-webkit-background-clip: text) {
+    .highlight {
+        color: #00d4ff !important;
+        background: none !important;
+    }
 }
 
 @keyframes highlightShine {
@@ -920,7 +943,7 @@ section {
     background-size: 200% 200%;
     border-radius: 5px;
     width: 0;
-    transition: width 2s ease;
+    transition: width 1s ease;
     animation: skillGradient 3s ease-in-out infinite;
     position: relative;
 }
