@@ -1463,59 +1463,72 @@ class VisitorCounter {
 
 const visitorCounter = new VisitorCounter();
 
-// Simple Matrix Rain
-function startMatrixRain() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'matrix-canvas';
-    canvas.style.cssText = `
+
+
+// Simple Visitor Counter
+function createVisitorCounter() {
+    const counter = document.createElement('div');
+    counter.id = 'visitor-counter';
+    counter.style.cssText = `
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
-        z-index: -1;
-        opacity: 0.15;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(45deg, #00d4ff, #4ecdc4);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 25px;
+        font-size: 13px;
+        font-weight: 600;
+        z-index: 9999;
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     `;
-    document.body.appendChild(canvas);
     
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const visitorCount = parseInt(localStorage.getItem('visitorCount') || '0') + 1;
+    localStorage.setItem('visitorCount', visitorCount.toString());
     
-    const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const fontSize = 16;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(0);
+    counter.innerHTML = `
+        <div>👥 Visitors: ${visitorCount}</div>
+        <div style="font-size: 11px; opacity: 0.8; margin-top: 2px;">📊 Live Counter</div>
+    `;
     
-    function draw() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#00ff00';
-        ctx.font = fontSize + 'px monospace';
-        
-        for (let i = 0; i < drops.length; i++) {
-            const char = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-            
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-        
-        requestAnimationFrame(draw);
-    }
+    counter.addEventListener('click', () => {
+        showNotification('Thanks for visiting! 🚀', 'success');
+        counter.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            counter.style.transform = 'scale(1)';
+        }, 200);
+    });
     
-    draw();
+    counter.addEventListener('mouseenter', () => {
+        counter.style.transform = 'scale(1.05)';
+    });
+    
+    counter.addEventListener('mouseleave', () => {
+        counter.style.transform = 'scale(1)';
+    });
+    
+    document.body.appendChild(counter);
 }
 
-// Initialize theme toggle, matrix, and GitHub stats
+// Initialize everything when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Page loaded - initializing features...');
+    
+    // Theme toggle
     initializeThemeToggle();
-    startMatrixRain();
-    setTimeout(initializeGitHubStats, 1000);
+    
+    // Visitor counter
+    createVisitorCounter();
+    
+    // GitHub stats
+    setTimeout(() => {
+        initializeGitHubStats();
+    }, 1000);
+    
+    console.log('All features initialized!');
 });
 
 // GitHub Stats - Feature #3

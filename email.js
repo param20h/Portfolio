@@ -36,7 +36,8 @@ function sendEmail(name, email, message, form) {
     submitBtn.innerHTML = 'Sending...';
     submitBtn.disabled = true;
     
-    // EmailJS send
+    // EmailJS send with debug
+    console.log('Attempting to send email...');
     emailjs.send('service_wv98oq4', 'template_2096w1h', {
         from_name: name,
         from_email: email,
@@ -58,6 +59,23 @@ function sendEmail(name, email, message, form) {
 }
 
 function showNotification(message, type) {
+    // Add CSS animations if not already added
+    if (!document.getElementById('notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
