@@ -33,6 +33,18 @@
     <div class="particles"></div>
     <div class="floating-shapes"></div>
     
+    <!-- Liquid Morphing Background -->
+    <canvas id="liquid-canvas" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: -2;
+        opacity: 0.3;
+    "></canvas>
+    
 
     
     <nav class="navbar">
@@ -591,6 +603,7 @@
     <script src="quotes.js"></script>
     <script src="github-real.js"></script>
     <script src="ai-agent.js"></script>
+    <script src="liquid-bg.js"></script>
     <script>
         // Simple visitor counter update
         const visitorCount = parseInt(localStorage.getItem('visitorCount') || '0') + 1;
