@@ -74,6 +74,14 @@
             </a>
         </div>
         
+        <!-- Random Quote Generator -->
+        <div class="floating-quote">
+            <div id="quote-widget" class="quote-float-btn">
+                <i class="fas fa-quote-left"></i>
+                <span id="quote-text" class="quote-text">Click for inspiration!</span>
+            </div>
+        </div>
+        
         <div class="hero-content">
             <div class="profile-container">
                 <div class="profile-photo-wrapper">
@@ -480,9 +488,109 @@
         </div>
     </div>
     
+    <!-- AI Agent Chat Widget -->
+    <div id="ai-chat-widget" style="
+        position: fixed;
+        bottom: 100px;
+        left: 20px;
+        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        z-index: 9996;
+        box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: aiPulse 2s infinite;
+    ">
+        <i class="fas fa-robot" style="margin-right: 8px;"></i>
+        Ask AI about me!
+    </div>
+    
+    <!-- AI Chat Window -->
+    <div id="ai-chat-window" style="
+        position: fixed;
+        bottom: 160px;
+        left: 20px;
+        width: 350px;
+        height: 450px;
+        background: rgba(0, 0, 0, 0.95);
+        border: 2px solid #9b59b6;
+        border-radius: 15px;
+        z-index: 10001;
+        display: none;
+        flex-direction: column;
+        backdrop-filter: blur(20px);
+    ">
+        <div style="
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 15px;
+            border-radius: 13px 13px 0 0;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        ">
+            <span>🤖 AI Assistant - Ask about Paramjit</span>
+            <button id="close-ai-chat" style="
+                background: none;
+                border: none;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+            ">&times;</button>
+        </div>
+        
+        <div id="ai-chat-messages" style="
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            color: white;
+            font-size: 14px;
+        ">
+            <div class="ai-message" style="margin-bottom: 15px; padding: 10px; background: rgba(155, 89, 182, 0.2); border-radius: 10px;">
+                <strong>🤖 AI:</strong> Hi! I'm Paramjit's AI assistant. Ask me anything about his skills, projects, or experience!
+            </div>
+        </div>
+        
+        <div style="
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        ">
+            <input id="ai-chat-input" type="text" placeholder="Ask about Paramjit's skills..." style="
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #9b59b6;
+                border-radius: 20px;
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+                outline: none;
+            ">
+            <button id="send-ai-message" style="
+                background: linear-gradient(45deg, #9b59b6, #8e44ad);
+                border: none;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-weight: 600;
+            ">🤖</button>
+        </div>
+    </div>
+
+    
     <script src="script.js"></script>
     <script src="holo-card.js"></script>
     <script src="email.js"></script>
+    <script src="quotes.js"></script>
+    <script src="github-real.js"></script>
+    <script src="ai-agent.js"></script>
     <script>
         // Simple visitor counter update
         const visitorCount = parseInt(localStorage.getItem('visitorCount') || '0') + 1;
