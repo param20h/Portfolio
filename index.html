@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paramjit Singh - Developer</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="github-stats.css">
     <link rel="icon" href="media/profile.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -46,6 +47,9 @@
                 <a href="#contact" class="nav-link">Contact</a>
                 <button class="theme-toggle" id="theme-toggle">
                     <i class="fas fa-moon"></i>
+                </button>
+                <button class="matrix-toggle" id="matrix-toggle">
+                    <i class="fas fa-code"></i>
                 </button>
             </div>
             <div class="hamburger">
@@ -211,6 +215,50 @@
                         <div class="skill-bar"><div class="skill-progress" data-width="50"></div></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="github-stats" class="github-stats">
+        <div class="container">
+            <h2 class="section-title">GitHub Statistics</h2>
+            <div class="github-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fab fa-github"></i>
+                        <h3 id="repos-count">--</h3>
+                        <p>Repositories</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <h3 id="stars-count">--</h3>
+                        <p>Stars</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-code-branch"></i>
+                        <h3 id="forks-count">--</h3>
+                        <p>Forks</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3 id="followers-count">--</h3>
+                        <p>Followers</p>
+                    </div>
+                </div>
+                <div class="github-info">
+                    <div class="languages-chart">
+                        <h3>Top Languages</h3>
+                        <div id="languages-list">Loading...</div>
+                    </div>
+                    <div class="recent-activity">
+                        <h3>Recent Repositories</h3>
+                        <div id="recent-repos">Loading...</div>
+                    </div>
+                </div>
+                <button class="refresh-btn" id="refresh-github">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh Data
+                </button>
             </div>
         </div>
     </section>

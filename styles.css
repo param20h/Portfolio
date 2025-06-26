@@ -1535,6 +1535,39 @@ section {
     box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
 }
 
+/* Matrix Toggle Button */
+.matrix-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(0, 255, 0, 0.3);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00ff00;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    margin-left: 10px;
+}
+
+.matrix-toggle:hover {
+    background: rgba(0, 255, 0, 0.2);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+}
+
+.matrix-toggle.disabled {
+    color: #666;
+    border-color: rgba(102, 102, 102, 0.3);
+}
+
+.matrix-toggle.disabled:hover {
+    background: rgba(102, 102, 102, 0.2);
+    box-shadow: 0 0 20px rgba(102, 102, 102, 0.4);
+}
+
 /* Light Mode Styles - Keep Colors Visible */
 body.light-mode {
     background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 25%, #ddeeff 50%, #d4e9ff 75%, #f0f8ff 100%) !important;

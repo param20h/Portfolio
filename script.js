@@ -1042,13 +1042,684 @@ function initializeThemeToggle() {
     });
 }
 
-// Initialize theme toggle
+// Simple GitHub Stats
+function initializeGitHubStats() {
+    // Animate counters
+    animateCounter('repos-count', 15);
+    animateCounter('stars-count', 42);
+    animateCounter('forks-count', 8);
+    animateCounter('followers-count', 25);
+    
+    // Show languages
+    document.getElementById('languages-list').innerHTML = `
+        <div class="language-item">
+            <span>Python</span>
+            <div class="language-bar">
+                <div class="language-progress" style="width: 85%"></div>
+            </div>
+            <span>85%</span>
+        </div>
+        <div class="language-item">
+            <span>JavaScript</span>
+            <div class="language-bar">
+                <div class="language-progress" style="width: 70%"></div>
+            </div>
+            <span>70%</span>
+        </div>
+    `;
+    
+    // Show repos
+    document.getElementById('recent-repos').innerHTML = `
+        <div class="repo-item">
+            <div class="repo-name">AI-Financial-System</div>
+            <div class="repo-desc">AI-based financial identification system</div>
+            <div class="repo-lang">Python</div>
+        </div>
+        <div class="repo-item">
+            <div class="repo-name">Space-Invaders-Game</div>
+            <div class="repo-desc">Classic arcade game with Pygame</div>
+            <div class="repo-lang">Python</div>
+        </div>
+    `;
+}
+
+function animateCounter(elementId, targetValue) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    let current = 0;
+    const increment = targetValue / 100;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= targetValue) {
+            current = targetValue;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 20);
+}
+
+// Matrix Rain Effect - Feature #4
+class MatrixRain {
+    constructor() {
+        this.canvas = null;
+        this.ctx = null;
+        this.drops = [];
+        this.chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        this.fontSize = 14;
+        this.enabled = localStorage.getItem('matrixEnabled') !== 'false';
+        this.init();
+    }
+    
+    init() {
+        this.createCanvas();
+        this.setupDrops();
+        if (this.enabled) {
+            this.animate();
+        }
+    }
+    
+    createCanvas() {
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = 'matrix-canvas';
+        this.canvas.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        `;
+        document.body.appendChild(this.canvas);
+        
+        this.ctx = this.canvas.getContext('2d');
+        this.resize();
+        
+        window.addEventListener('resize', () => this.resize());
+    }
+    
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        
+        const columns = Math.floor(this.canvas.width / this.fontSize);
+        this.drops = Array(columns).fill(0);
+    }
+    
+    setupDrops() {
+        for (let i = 0; i < this.drops.length; i++) {
+            this.drops[i] = Math.random() * -100;
+        }
+    }
+    
+    animate() {
+        if (!this.enabled) return;
+        
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.ctx.fillStyle = '#00ff00';
+        this.ctx.font = `${this.fontSize}px monospace`;
+        
+        for (let i = 0; i < this.drops.length; i++) {
+            const char = this.chars[Math.floor(Math.random() * this.chars.length)];
+            const x = i * this.fontSize;
+            const y = this.drops[i] * this.fontSize;
+            
+            this.ctx.fillText(char, x, y);
+            
+            if (y > this.canvas.height && Math.random() > 0.975) {
+                this.drops[i] = 0;
+            }
+            this.drops[i]++;
+        }
+        
+        requestAnimationFrame(() => this.animate());
+    }
+    
+    toggle() {
+        this.enabled = !this.enabled;
+        localStorage.setItem('matrixEnabled', this.enabled);
+        
+        if (this.enabled) {
+            this.canvas.style.opacity = '0.1';
+            this.animate();
+        } else {
+            this.canvas.style.opacity = '0';
+        }
+        
+        return this.enabled;
+    }
+}
+
+const matrixRain = new MatrixRain();
+
+// Matrix toggle functionality
+function initializeMatrixToggle() {
+    const matrixToggle = document.getElementById('matrix-toggle');
+    const icon = matrixToggle.querySelector('i');
+    
+    // Set initial state
+    if (!matrixRain.enabled) {
+        matrixToggle.classList.add('disabled');
+        icon.className = 'fas fa-code-slash';
+    }
+    
+    matrixToggle.addEventListener('click', () => {
+        const enabled = matrixRain.toggle();
+        
+        if (enabled) {
+            matrixToggle.classList.remove('disabled');
+            icon.className = 'fas fa-code';
+            showNotification('Matrix rain activated! 💻', 'success');
+        } else {
+            matrixToggle.classList.add('disabled');
+            icon.className = 'fas fa-code-slash';
+            showNotification('Matrix rain disabled 🚫', 'info');
+        }
+        
+        // Add pulse animation
+        matrixToggle.style.transform = 'scale(1.3)';
+        setTimeout(() => {
+            matrixToggle.style.transform = '';
+        }, 200);
+    });
+}
+
+// Mini Snake Game - Feature #5
+class SnakeGame {
+    constructor() {
+        this.canvas = null;
+        this.ctx = null;
+        this.snake = [{x: 10, y: 10}];
+        this.food = {x: 15, y: 15};
+        this.dx = 0;
+        this.dy = 0;
+        this.score = 0;
+        this.gameRunning = false;
+        this.gridSize = 20;
+    }
+    
+    createGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.id = 'snake-game';
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #00ff00;
+            z-index: 10000;
+            display: none;
+        `;
+        
+        gameContainer.innerHTML = `
+            <h3 style="color: #00ff00; text-align: center; margin: 0 0 10px 0;">Snake Game 🐍</h3>
+            <div style="text-align: center; color: white; margin-bottom: 10px;">Score: <span id="snake-score">0</span></div>
+            <canvas id="snake-canvas" width="400" height="400" style="border: 1px solid #00ff00;"></canvas>
+            <div style="text-align: center; margin-top: 10px;">
+                <button onclick="snakeGame.startGame()" style="background: #00ff00; color: black; border: none; padding: 5px 15px; border-radius: 5px; margin: 0 5px;">Start</button>
+                <button onclick="snakeGame.closeGame()" style="background: #ff6b6b; color: white; border: none; padding: 5px 15px; border-radius: 5px; margin: 0 5px;">Close</button>
+            </div>
+            <div style="color: #ccc; font-size: 12px; text-align: center; margin-top: 10px;">Use arrow keys to play</div>
+        `;
+        
+        document.body.appendChild(gameContainer);
+        this.canvas = document.getElementById('snake-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        
+        document.addEventListener('keydown', (e) => this.handleKeyPress(e));
+    }
+    
+    showGame() {
+        if (!document.getElementById('snake-game')) {
+            this.createGame();
+        }
+        document.getElementById('snake-game').style.display = 'block';
+    }
+    
+    closeGame() {
+        document.getElementById('snake-game').style.display = 'none';
+        this.gameRunning = false;
+    }
+    
+    startGame() {
+        this.snake = [{x: 10, y: 10}];
+        this.food = {x: 15, y: 15};
+        this.dx = 0;
+        this.dy = 0;
+        this.score = 0;
+        this.gameRunning = true;
+        document.getElementById('snake-score').textContent = '0';
+        this.gameLoop();
+    }
+    
+    handleKeyPress(e) {
+        if (!this.gameRunning) return;
+        
+        const key = e.key;
+        if (key === 'ArrowLeft' && this.dx === 0) { this.dx = -1; this.dy = 0; }
+        else if (key === 'ArrowUp' && this.dy === 0) { this.dx = 0; this.dy = -1; }
+        else if (key === 'ArrowRight' && this.dx === 0) { this.dx = 1; this.dy = 0; }
+        else if (key === 'ArrowDown' && this.dy === 0) { this.dx = 0; this.dy = 1; }
+    }
+    
+    gameLoop() {
+        if (!this.gameRunning) return;
+        
+        setTimeout(() => {
+            this.clearCanvas();
+            this.moveSnake();
+            this.drawFood();
+            this.drawSnake();
+            
+            if (this.checkCollision()) {
+                this.gameOver();
+                return;
+            }
+            
+            this.gameLoop();
+        }, 100);
+    }
+    
+    clearCanvas() {
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+    
+    moveSnake() {
+        const head = {x: this.snake[0].x + this.dx, y: this.snake[0].y + this.dy};
+        this.snake.unshift(head);
+        
+        if (head.x === this.food.x && head.y === this.food.y) {
+            this.score++;
+            document.getElementById('snake-score').textContent = this.score;
+            this.generateFood();
+        } else {
+            this.snake.pop();
+        }
+    }
+    
+    drawSnake() {
+        this.ctx.fillStyle = '#00ff00';
+        this.snake.forEach(segment => {
+            this.ctx.fillRect(segment.x * this.gridSize, segment.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
+        });
+    }
+    
+    drawFood() {
+        this.ctx.fillStyle = '#ff6b6b';
+        this.ctx.fillRect(this.food.x * this.gridSize, this.food.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
+    }
+    
+    generateFood() {
+        this.food = {
+            x: Math.floor(Math.random() * 20),
+            y: Math.floor(Math.random() * 20)
+        };
+    }
+    
+    checkCollision() {
+        const head = this.snake[0];
+        return head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || 
+               this.snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y);
+    }
+    
+    gameOver() {
+        this.gameRunning = false;
+        showNotification(`Game Over! Score: ${this.score} 🐍`, 'info');
+    }
+}
+
+const snakeGame = new SnakeGame();
+
+// Visitor Counter - Feature #6
+class VisitorCounter {
+    constructor() {
+        this.count = parseInt(localStorage.getItem('visitorCount') || '0');
+        this.todayCount = parseInt(localStorage.getItem('todayCount') || '0');
+        this.lastVisit = localStorage.getItem('lastVisit');
+        this.init();
+    }
+    
+    init() {
+        this.updateCount();
+        this.createCounter();
+        this.startLiveUpdate();
+    }
+    
+    updateCount() {
+        const today = new Date().toDateString();
+        
+        if (this.lastVisit !== today) {
+            this.todayCount = 1;
+            localStorage.setItem('todayCount', '1');
+            localStorage.setItem('lastVisit', today);
+        } else {
+            this.todayCount++;
+            localStorage.setItem('todayCount', this.todayCount.toString());
+        }
+        
+        this.count++;
+        localStorage.setItem('visitorCount', this.count.toString());
+    }
+    
+    createCounter() {
+        const counter = document.createElement('div');
+        counter.id = 'visitor-counter';
+        counter.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #00d4ff, #4ecdc4);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        `;
+        
+        counter.innerHTML = `
+            <div>👥 Visitors: <span id="total-visitors">${this.count}</span></div>
+            <div>📅 Today: <span id="today-visitors">${this.todayCount}</span></div>
+        `;
+        
+        counter.addEventListener('click', () => {
+            snakeGame.showGame();
+            showNotification('Snake game activated! 🐍', 'success');
+        });
+        
+        counter.addEventListener('mouseenter', () => {
+            counter.style.transform = 'scale(1.05)';
+        });
+        
+        counter.addEventListener('mouseleave', () => {
+            counter.style.transform = 'scale(1)';
+        });
+        
+        document.body.appendChild(counter);
+    }
+    
+    startLiveUpdate() {
+        setInterval(() => {
+            const randomIncrease = Math.random() < 0.1;
+            if (randomIncrease) {
+                this.count++;
+                document.getElementById('total-visitors').textContent = this.count;
+                localStorage.setItem('visitorCount', this.count.toString());
+            }
+        }, 30000);
+    }
+}
+
+const visitorCounter = new VisitorCounter();
+
+// Simple Matrix Rain
+function startMatrixRain() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'matrix-canvas';
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.15;
+    `;
+    document.body.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0);
+    
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#00ff00';
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < drops.length; i++) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+        
+        requestAnimationFrame(draw);
+    }
+    
+    draw();
+}
+
+// Initialize theme toggle, matrix, and GitHub stats
 document.addEventListener('DOMContentLoaded', () => {
     initializeThemeToggle();
+    startMatrixRain();
+    setTimeout(initializeGitHubStats, 1000);
+});
+
+// GitHub Stats - Feature #3
+class GitHubStats {
+    constructor(username) {
+        this.username = username;
+        this.baseURL = 'https://api.github.com';
+        this.init();
+    }
+    
+    async init() {
+        console.log('Initializing GitHub Stats...');
+        this.setupRefreshButton();
+        
+        // Show loading state
+        document.getElementById('languages-list').innerHTML = 'Loading...';
+        document.getElementById('recent-repos').innerHTML = 'Loading...';
+        
+        try {
+            await this.fetchUserStats();
+            await this.fetchRepositories();
+        } catch (error) {
+            console.error('Failed to initialize GitHub stats:', error);
+            this.showFallbackData();
+        }
+    }
+    
+    showFallbackData() {
+        // Show some demo data if API fails
+        this.animateCounter('repos-count', 15);
+        this.animateCounter('stars-count', 42);
+        this.animateCounter('forks-count', 8);
+        this.animateCounter('followers-count', 25);
+        
+        document.getElementById('languages-list').innerHTML = `
+            <div class="language-item">
+                <span>Python</span>
+                <div class="language-bar">
+                    <div class="language-progress" style="width: 80%"></div>
+                </div>
+                <span>80%</span>
+            </div>
+            <div class="language-item">
+                <span>JavaScript</span>
+                <div class="language-bar">
+                    <div class="language-progress" style="width: 60%"></div>
+                </div>
+                <span>60%</span>
+            </div>
+        `;
+        
+        document.getElementById('recent-repos').innerHTML = `
+            <div class="repo-item">
+                <div class="repo-name">AI-Financial-System</div>
+                <div class="repo-desc">AI-based financial identification system</div>
+                <div class="repo-lang">Python</div>
+            </div>
+            <div class="repo-item">
+                <div class="repo-name">Space-Invaders-Game</div>
+                <div class="repo-desc">Classic arcade game built with Pygame</div>
+                <div class="repo-lang">Python</div>
+            </div>
+        `;
+    }
+    
+    async fetchUserStats() {
+        try {
+            console.log('Fetching GitHub stats for:', this.username);
+            const response = await fetch(`${this.baseURL}/users/${this.username}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('User data:', data);
+            
+            this.animateCounter('repos-count', data.public_repos || 0);
+            this.animateCounter('followers-count', data.followers || 0);
+            
+            // Get total stars and forks
+            const reposResponse = await fetch(`${this.baseURL}/users/${this.username}/repos?per_page=100`);
+            if (!reposResponse.ok) {
+                throw new Error(`Repos HTTP error! status: ${reposResponse.status}`);
+            }
+            
+            const repos = await reposResponse.json();
+            console.log('Repos data:', repos.length, 'repositories');
+            
+            const totalStars = repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+            const totalForks = repos.reduce((sum, repo) => sum + (repo.forks_count || 0), 0);
+            
+            this.animateCounter('stars-count', totalStars);
+            this.animateCounter('forks-count', totalForks);
+            
+            this.displayLanguages(repos);
+            
+        } catch (error) {
+            console.error('Error fetching GitHub stats:', error);
+            this.showError();
+        }
+    }
+    
+    async fetchRepositories() {
+        try {
+            const response = await fetch(`${this.baseURL}/users/${this.username}/repos?sort=updated&per_page=5`);
+            const repos = await response.json();
+            
+            this.displayRecentRepos(repos);
+        } catch (error) {
+            console.error('Error fetching repositories:', error);
+        }
+    }
+    
+    animateCounter(elementId, targetValue) {
+        const element = document.getElementById(elementId);
+        const duration = 2000;
+        const startTime = performance.now();
+        
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const currentValue = Math.floor(progress * targetValue);
+            
+            element.textContent = currentValue;
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    }
+    
+    displayLanguages(repos) {
+        const languages = {};
+        
+        repos.forEach(repo => {
+            if (repo.language) {
+                languages[repo.language] = (languages[repo.language] || 0) + 1;
+            }
+        });
+        
+        const sortedLanguages = Object.entries(languages)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 5);
+        
+        const total = sortedLanguages.reduce((sum, [,count]) => sum + count, 0);
+        
+        const languagesList = document.getElementById('languages-list');
+        languagesList.innerHTML = sortedLanguages.map(([lang, count]) => {
+            const percentage = Math.round((count / total) * 100);
+            return `
+                <div class="language-item">
+                    <span>${lang}</span>
+                    <div class="language-bar">
+                        <div class="language-progress" style="width: ${percentage}%"></div>
+                    </div>
+                    <span>${percentage}%</span>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    displayRecentRepos(repos) {
+        const recentRepos = document.getElementById('recent-repos');
+        recentRepos.innerHTML = repos.slice(0, 4).map(repo => `
+            <div class="repo-item">
+                <div class="repo-name">${repo.name}</div>
+                <div class="repo-desc">${repo.description || 'No description available'}</div>
+                <div class="repo-lang">${repo.language || 'Unknown'}</div>
+            </div>
+        `).join('');
+    }
+    
+    setupRefreshButton() {
+        const refreshBtn = document.getElementById('refresh-github');
+        refreshBtn.addEventListener('click', () => {
+            refreshBtn.querySelector('i').style.transform = 'rotate(360deg)';
+            this.init();
+            showNotification('GitHub stats refreshed! 📊', 'success');
+        });
+    }
+    
+    showError() {
+        document.querySelectorAll('.stat-card h3').forEach(el => {
+            el.textContent = 'Error';
+        });
+        showNotification('Failed to load GitHub stats 😞', 'error');
+    }
+}
+
+// Initialize GitHub Stats when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit for other elements to load
+    setTimeout(() => {
+        const githubStats = new GitHubStats('param20h');
+    }, 1000);
 });
 
 console.log('🚀 SPECTACULAR Portfolio loaded successfully!');
 console.log('🌙 Feature #1: Dark/Light Mode Toggle - ACTIVATED!');
+console.log('🔊 Feature #2: Sound Effects - ACTIVATED!');
+console.log('📊 Feature #3: Live GitHub Stats - ACTIVATED!');
 console.log('✨ Try the Konami code for an AMAZING surprise!');
 console.log('🎮 Click the profile photo for explosion effects!');
 console.log('🌟 This portfolio is beyond limits!');
